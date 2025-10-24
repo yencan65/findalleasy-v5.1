@@ -51,9 +51,9 @@ app.get("/api/suggestions", (req, res) => {
 });
 
 // Frontend build'i Render için yönlendirme
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
-app.get("*", (_, res) => {
-  res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
 });
 
 // Sunucu portu
