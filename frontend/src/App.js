@@ -1,50 +1,40 @@
-import React, { useState } from "react";
-import "./index.css";
-import "./i18n";
-import Slogan from "./components/Slogan";
+import React, { useEffect, useState } from "react";
+import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Vitrin from "./components/Vitrin";
-import SmartAssistant from "./components/SmartAssistant";
-import Logo from "./components/Logo";
-import { useTranslation } from "react-i18next";
+import Footer from "./components/Footer";
+import AIAsistan from "./components/AIAsistan";
+import "./styles/global.css";
 
 export default function App() {
-  const [query, setQuery] = useState("");
-  const [forced, setForced] = useState(null);
-  const { i18n, t } = useTranslation();
+  const [mood, setMood] = useState("enerjik");
+  const [vitrin, setVitrin] = useState([]);
 
-  const onSearch = (q) => setQuery(q || "");
-  const onAssistantAccept = (list) => {
-    if (list?.length) setForced(list);
+  useEffect(() => {
+    const h = new Date().getHours();
+    if (h >= 10 && h < 16) setMood("dingin");
+    else if (h >= 16 && h < 21) setMood("huzurlu");
+    else if (h >= 21 || h < 6) setMood("sakin");
+    else setMood("enerjik");
+  }, []);
+
+  // Canlı AI slogan (kısa, yaşayan)
+  const getLiveSlogan = () => {
+    if (mood === "enerjik") return "Hazır mısın? 🚀";
+    if (mood === "dingin")  return "Rahatla, birlikte bakalım. ☀️";
+    if (mood === "huzurlu") return "Bugün seni ne mutlu eder? 🌇";
+    return "Huzurlu alışveriş burada. 🌙";
   };
 
   return (
-    <div className={`app ${i18n.language === "ar" ? "rtl" : ""}`}>
-      <header className="topbar">
-        <Logo />
-        <select
-          onChange={(e) => i18n.changeLanguage(e.target.value)}
-          value={i18n.language}
-          className="lang-select"
-        >
-          <option value="tr">TR</option>
-          <option value="en">EN</option>
-          <option value="ar">AR</option>
-          <option value="zh">中文</option>
-        </select>
-      </header>
-
-      <main className="hero">
-        <Slogan />
-        <SearchBar onSearch={onSearch} />
-        <Vitrin query={query} forced={forced} />
-      </main>
-
-      <SmartAssistant onAccept={onAssistantAccept} />
-
-      <footer className="footer">
-        {t("footer")}
-      </footer>
+    <div className={`app mood-${mood}`}>
+      <Header />
+      {/* Arama çubuğunun ÜSTÜNDE kısa, canlı AI slogan */}
+      <div className="live-slogan">{getLiveSlogan()}</div>
+      <SearchBar mood={mood} />
+      <Vitrin mood={mood} vitrin={vitrin} setVitrin={setVitrin} />
+      <Footer />
+      <AIAsistan setVitrin={setVitrin} />
     </div>
   );
 }

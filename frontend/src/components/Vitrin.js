@@ -1,41 +1,40 @@
-import React, { useEffect, useState } from "react";
-import API_BASE_URL from "../config";
-import { useTranslation } from "react-i18next";
+import React, { useEffect } from "react";
+import axios from "axios";
+import "../styles/vitrin.css";
 
-export default function Vitrin({ query, forced }) {
-  const [items, setItems] = useState([]);
-  const { i18n } = useTranslation();
-
+export default function Vitrin({ mood, vitrin, setVitrin }) {
   useEffect(() => {
-    const run = async () => {
-      try {
-        const res = await fetch(
-          `${API_BASE_URL}/api/vitrin?s=${encodeURIComponent(query || "")}&lang=${i18n.language}`
-        );
-        const data = await res.json();
-        if (Array.isArray(data?.items)) setItems(data.items.slice(0, 4));
-      } catch {}
-    };
-    run();
-  }, [query, i18n.language]);
+    load();
+    // mood değişince de içeriği tazeler
+    // eslint-disable-next-line
+  }, [mood]);
 
-  useEffect(() => {
-    if (forced && forced.length) setItems(forced);
-  }, [forced]);
-
-  if (!items.length) return null;
+  const load = async () => {
+    const { data } = await axios.get("/api/vitrin");
+    setVitrin(data);
+  };
 
   return (
-    <div className="vitrin-grid">
-      {items.map((it, idx) => (
-        <div className="card" key={idx}>
-          <img src={it.image} alt={it.title} />
-          <div className="card-body">
-            <div className="title">{it.title}</div>
-            <div className="price">{it.price}</div>
+    <section className={`vitrin-container mood-${mood}`}>
+      {/* Sol tarafta minik selam (emoji + kısa selam) */}
+      <div className="vitrin-greet">
+        {mood === "enerjik" && <span>🌞 Günaydın!</span>}
+        {mood === "dingin"  && <span>☀️ Güzel bir gün!</span>}
+        {mood === "huzurlu" && <span>🌗 İyi akşamlar!</span>}
+        {mood === "sakin"   && <span>🌙 İyi geceler.</span>}
+      </div>
+
+      {/* 4 kart — tek satır, scroll yok */}
+      <div className="vitrin-row">
+        {vitrin.map((item, i) => (
+          <div className="vitrin-card" key={i}>
+            <img src={item.image} alt={item.title} />
+            <h3>{item.title}</h3>
+            <p>{item.price} {item.currency}</p>
+            <span className="tag-ai">{item.tag}</span>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
   );
 }

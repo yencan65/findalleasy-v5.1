@@ -1,0 +1,24 @@
+.header{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:22px 60px; background:transparent; position:relative; z-index:10;
+}
+.brand{ display:flex; align-items:center; gap:8px; }
+.brand-text{ font-size:1.8rem; font-weight:700; color:#3a3222; letter-spacing:.3px; }
+
+.logo-snapping-ai{
+  width:44px; height:44px;
+  animation:pulseAI 5s infinite ease-in-out;
+  cursor:pointer;
+  filter: drop-shadow(0 0 8px rgba(217,183,106,.35));
+}
+@keyframes pulseAI{
+  0%,100%{ transform:scale(1); opacity:.95;}
+  50%{ transform:scale(1.04); opacity:1;}
+}
+
+.language-selector{
+  font-size:.95rem; padding:6px 12px; border-radius:12px;
+  border:1px solid rgba(217,183,106,.35);
+  background:rgba(255,255,255,.6); backdrop-filter:blur(4px);
+  color:#3a3222; cursor:pointer; font-weight:600;
+}

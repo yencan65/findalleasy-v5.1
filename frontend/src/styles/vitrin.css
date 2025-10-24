@@ -1,0 +1,39 @@
+.vitrin-container{ width:100%; margin-top:28px; }
+.vitrin-greet{
+  max-width:1100px; margin:0 auto 8px; padding:0 20px;
+  font-weight:600; color:#a78b4e;
+}
+
+/* 4 kart tek satır — scroll yok */
+.vitrin-row{
+  display:flex; justify-content:center; align-items:center; gap:20px;
+  width:100%; height:420px; overflow:hidden;
+}
+
+.vitrin-card{
+  flex:0 0 240px; height:360px;
+  background:rgba(255,255,255,.88);
+  border-radius:18px; border:1px solid rgba(217,183,106,.3);
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  text-align:center; transition:transform .35s, box-shadow .35s;
+  overflow:hidden;
+}
+.vitrin-card:hover{ transform:scale(1.05); box-shadow:0 10px 25px rgba(217,183,106,.3); }
+
+.vitrin-card img{ width:100%; height:200px; object-fit:cover; }
+.vitrin-card h3{ font-size:1.05rem; margin:10px 0 4px; color:#3a3222; }
+.vitrin-card p{ color:#9b8555; font-weight:700; margin:2px 0 6px; }
+
+.tag-ai{
+  display:inline-block; padding:4px 10px; border-radius:10px;
+  background:#f5e6c0; color:#816b3b; font-size:.8rem; font-weight:600;
+}
+
+/* Mobilde akıllı slider */
+@media (max-width:900px){
+  .vitrin-row{
+    overflow-x:auto; scroll-snap-type:x mandatory; padding:0 16px;
+    justify-content:flex-start;
+  }
+  .vitrin-card{ scroll-snap-align:center; flex:0 0 70vw; }
+}

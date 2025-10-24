@@ -1,0 +1,13 @@
+.ai-assistant{
+  position:fixed; right:40px; bottom:40px; text-align:center; cursor:pointer; z-index:20;
+}
+.ai-assistant img{
+  width:64px; height:64px; animation:pulseAI 4s infinite ease-in-out;
+}
+.ai-assistant img.active{
+  transform:scale(1.18);
+  filter: drop-shadow(0 0 15px rgba(217,183,106,.6));
+}
+.ai-assistant p{
+  margin-top:8px; font-size:14px; color:#a78b4e; font-weight:700;
+}

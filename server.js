@@ -1,61 +1,39 @@
 import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
 import path from "path";
-import { fileURLToPath } from "url";
+import cors from "cors";
 
-dotenv.config();
 const app = express();
-
-// CORS ve JSON ayarları
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(express.json());
 
-// __dirname ayarı (ESM uyumlu)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve();
 
-// MongoDB bağlantısı
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("✅ MongoDB bağlantısı başarılı"))
-  .catch((err) => console.error("❌ MongoDB bağlantı hatası:", err.message));
+// Basit mood (ruh) hesaplama: sabah-öğlen-akşam-gece
+const getMood = () => {
+  const h = new Date().getHours();
+  if (h >= 10 && h < 16) return "dingin";   // öğlen
+  if (h >= 16 && h < 21) return "huzurlu";  // akşam
+  if (h >= 21 || h < 6) return "sakin";     // gece
+  return "enerjik";                          // sabah
+};
 
-// Basit test endpoint
-app.get("/api/slogan", (req, res) => {
-  res.json({ message: "FindAllEasy v5.1 AI backend aktif!" });
-});
-
-// Örnek vitrin verisi
+// Akıllı vitrin (basit seed veriler)
 app.get("/api/vitrin", (req, res) => {
-  res.json({
-    items: [
-      { title: "AI Smart Watch", price: "$89", image: "https://via.placeholder.com/200" },
-      { title: "Wireless Headphones", price: "$59", image: "https://via.placeholder.com/200" },
-      { title: "AI Drone Camera", price: "$299", image: "https://via.placeholder.com/200" },
-      { title: "Foldable Tablet", price: "$499", image: "https://via.placeholder.com/200" }
-    ]
-  });
+  const mood = getMood();
+  const data = [
+    { title: "Akıllı Saat", price: "$149", currency: "USD", tag: "Bugün Popüler", image: "https://picsum.photos/seed/1/640/480", mood },
+    { title: "Yoga Matı", price: "$39",  currency: "USD", tag: "Ruh Haline Uygun", image: "https://picsum.photos/seed/2/640/480", mood },
+    { title: "Kahve Makinesi", price: "$79", currency: "USD", tag: "Sana Özel", image: "https://picsum.photos/seed/3/640/480", mood },
+    { title: "Gece Lambası", price: "$25", currency: "USD", tag: "Rahatlatıcı Seçim", image: "https://picsum.photos/seed/4/640/480", mood }
+  ];
+  res.json(data);
 });
 
-// AI Asistan önerileri
-app.get("/api/suggestions", (req, res) => {
-  res.json({
-    items: [
-      { title: "Trend: Smart Glasses ✨" },
-      { title: "Yeni: AI Speaker" },
-      { title: "Popüler: Virtual Keyboard" }
-    ]
-  });
-});
-
-// Frontend build'i Render için yönlendirme
+// React build serve
 app.use(express.static(path.join(__dirname, "/frontend/build")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
 });
 
-// Sunucu portu
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`🚀 Sunucu ${PORT} portunda çalışıyor`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

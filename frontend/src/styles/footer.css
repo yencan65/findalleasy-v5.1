@@ -1,0 +1,13 @@
+.footer{
+  padding:40px 20px; text-align:center;
+  background:rgba(255,255,255,.5); backdrop-filter:blur(8px);
+  border-top:1px solid rgba(217,183,106,.3);
+  color:#333; line-height:1.6; transition:all .8s ease;
+}
+.footer .highlight{ border-bottom:2px solid #d9b67a; color:#c4a860; font-weight:700; }
+
+/* AI şıklatmada parıltı */
+.footer-glow{
+  box-shadow:0 -10px 25px rgba(217,183,106,.6);
+  background:linear-gradient(180deg,rgba(250,247,239,.92),rgba(236,228,215,.96));
+}
