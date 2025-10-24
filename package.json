@@ -1,0 +1,18 @@
+{
+  "name": "findalleasy-v5.1-intelligent-emotion-linked",
+  "version": "1.0.0",
+  "description": "FindAllEasy v5.1 — Intelligent Emotion Linked Edition with AI, global payments, and multi-language support.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "build-client": "cd frontend && npm install && npm run build"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1",
+    "path": "^0.12.7"
+  }
+}
